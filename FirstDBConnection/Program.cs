@@ -16,9 +16,6 @@ namespace FirstDBConnection
 
 
 
-
-
-
             List<CategoryResponseDto> categoryList=categoryController.GetCategories();
 
             foreach (CategoryResponseDto item in categoryList)
@@ -29,11 +26,20 @@ namespace FirstDBConnection
             Console.WriteLine("*************\n\n");
 
             CategoryCreateRequestDto req= new CategoryCreateRequestDto();
-            req.CategoryName = "sushi";
-            req.Desc = "cig baliktan yemekler.uzak doğu yemekleri.";
+
+
+
+            req.CategoryName = "süt";
+            req.Desc = "süt ürünleri";
+
+
+
+            CategoryCreateRequestDto req2 = new CategoryCreateRequestDto();
+
+            req2.CategoryName = "süt";
+            req2.Desc = "süt ürünleri";
 
             categoryController.createCategory(req);
-
 
             List<CategoryResponseDto> categoryList2 = categoryController.GetCategories();
 
