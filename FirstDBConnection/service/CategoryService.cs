@@ -32,7 +32,7 @@ namespace FirstDBConnection.service
             return responseDtos;
         }
 
-        public CategoryResponseDto GetCategoryById(int id) {
+        public CategoryResponseDto GetById(int id) {
 
             Category? category = context.Categories.
                 SingleOrDefault(x => x.CategoryID == id);
@@ -40,6 +40,17 @@ namespace FirstDBConnection.service
             
         }
 
+        public void create(CategoryCreateRequestDto request)
+        {
+            Category ca= new Category();
+
+            ca.CategoryName = request.CategoryName;
+            ca.Description = request.Desc;
+
+            context.Categories.Add(ca);
+            context.SaveChanges();
+
+        }
 
     }
 }

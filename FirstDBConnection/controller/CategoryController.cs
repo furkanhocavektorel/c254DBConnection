@@ -21,7 +21,12 @@ namespace FirstDBConnection.controller
 
         public CategoryResponseDto GetCategoryById(int id) { 
         
-            return categoryService.GetCategoryById(id);
+            return categoryService.GetById(id);
+        }
+
+        public void createCategory(CategoryCreateRequestDto request)
+        {
+            categoryService.create(request);
         }
 
     }
