@@ -81,14 +81,8 @@ namespace FirstDBConnection.service
 
             category = categoryMapper.map(dto);
 
-
-            Category c= new Category();
-            c.CategoryID= category.CategoryID;
-            c.CategoryName = "testtt";
-
-            c.CategoryName = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-            category.CategoryName= "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-
+         
+            context.Categories.Update(category);
             context.SaveChanges();
 
             return categoryMapper.map(category);
