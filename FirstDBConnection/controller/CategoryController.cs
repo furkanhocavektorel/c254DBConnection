@@ -29,5 +29,16 @@ namespace FirstDBConnection.controller
             categoryService.create(request);
         }
 
+        public bool softDeleteCategory(int id) { 
+        
+            return categoryService.softDelete(id);
+        }
+
+        public bool hardDeleteCategory(int id)
+        {
+            return categoryService.hardDelete(id);
+        }
+
+
     }
 }

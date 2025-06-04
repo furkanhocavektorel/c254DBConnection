@@ -2,8 +2,8 @@
 using FirstDBConnection.context;
 using FirstDBConnection.dto;
 using FirstDBConnection.entity;
+using FirstDBConnection.entity.enums;
 using FirstDBConnection.mapper;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace FirstDBConnection.service
 {
@@ -54,12 +54,12 @@ namespace FirstDBConnection.service
             
             Category ca= new Category();
 
-            ca.CategoryName = request.CategoryName+"--companyName";
-            ca.CategoryName.Split("--");
-
+            ca.CategoryName = request.CategoryName;
             ca.Description = request.Desc;
+            ca.Status = StatusEnam.ACTIVE;
 
-            Category cate=context.Categories.Add(ca).Entity;
+            ca.CategoryName = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            Category cate =context.Categories.Add(ca).Entity;
 
             context.SaveChanges();
 
@@ -80,12 +80,53 @@ namespace FirstDBConnection.service
             category.Description= dto.Description;*/
 
             category = categoryMapper.map(dto);
-            category=context.Categories.Update(category).Entity;
+
+
+            Category c= new Category();
+            c.CategoryID= category.CategoryID;
+            c.CategoryName = "testtt";
+
+            c.CategoryName = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            category.CategoryName= "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
             context.SaveChanges();
 
             return categoryMapper.map(category);
         }
+
+        public bool softDelete(int id)
+        {
+            Category? category = context.Categories.SingleOrDefault(x => x.CategoryID == id);
+
+            if (category == null) {
+                throw new Exception(id + " id'sine ait category bulunamadi!!!");
+            }
+
+            category.Status = StatusEnam.DELETED;
+
+            context.Categories.Update(category);
+            context.SaveChanges();
+            return true;
+
+        }
+
+
+        public bool hardDelete(int id)
+        {
+            Category? category = context.Categories.SingleOrDefault(x => x.CategoryID == id);
+
+            if (category == null)
+            {
+                throw new Exception(id + " id'sine ait category bulunamadi!!!");
+            }
+
+            context.Categories.Remove(category);
+            context.SaveChanges();
+            return true;
+
+        }
+
+
 
 
     }
