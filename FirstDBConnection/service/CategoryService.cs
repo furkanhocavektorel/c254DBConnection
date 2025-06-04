@@ -71,6 +71,7 @@ namespace FirstDBConnection.service
         {
             Category? category = context.Categories.Find(dto.CategoryID);
 
+
             if (category == null) {
                 Console.WriteLine(dto.CategoryID+ "ye ait category mevcut degil...");
                 return null;
