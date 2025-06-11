@@ -8,6 +8,7 @@ namespace FirstDBConnection.service
 {
     public class ProductService
     {
+        // TODO Context ile değil repository ile iletişime geçmelidir.
         HepsiSuradaContext context;
         ProductMapper productMapper;
         public ProductService()

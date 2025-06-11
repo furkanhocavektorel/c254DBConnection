@@ -1,7 +1,7 @@
 ﻿using FirstDBConnection.entity;
 using FirstDBConnection.util;
 
-namespace FirstDBConnection.repository
+namespace FirstDBConnection.repository.@abstract
 {
     public interface IProductRepository : IRepository<Product, int>
     {

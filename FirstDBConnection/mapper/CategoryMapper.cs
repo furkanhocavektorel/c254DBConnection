@@ -7,7 +7,14 @@ namespace FirstDBConnection.mapper
 {
     public class CategoryMapper
     {
+        public Category map(CategoryCreateRequestDto request)
+        {
+            Category category = new Category();
+            category.CategoryName = request.CategoryName;
+            category.Description = request.Desc;
+            return category;
 
+        }
         public CategoryResponseDto map(Category entity)
         {
             if (entity == null)

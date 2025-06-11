@@ -9,7 +9,7 @@ namespace FirstDBConnection.entity
         public string Description { get; set; }
 
         // ACTIVE,DELETED,PENDING
-        public StatusEnam? Status { get; set; } 
+        public StatusEnam? Status { get; set; } = StatusEnam.ACTIVE;
 
     }
 

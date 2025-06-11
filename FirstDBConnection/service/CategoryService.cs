@@ -4,24 +4,50 @@ using FirstDBConnection.dto;
 using FirstDBConnection.entity;
 using FirstDBConnection.entity.enums;
 using FirstDBConnection.mapper;
+using FirstDBConnection.repository.@abstract;
+using FirstDBConnection.repository.concrete;
+using FirstDBConnection.util;
+using System.Net;
 
 namespace FirstDBConnection.service
 {
     public class CategoryService
     {
-        HepsiSuradaContext context;
+        ICategoryRepository repository;
         CategoryMapper categoryMapper;
         public CategoryService()
         {
-            context = new HepsiSuradaContext();
+            repository = new CategoryRepository();
             categoryMapper = new CategoryMapper();
         }
         // C.R.U.D
         // create,read,update,delete
 
+
+        public CategoryResponseDto create(CategoryCreateRequestDto request)
+        {
+            Category? category = repository.getByName(request.CategoryName);
+             
+            if (category != null)
+            {
+                Console.WriteLine(request.CategoryName + " bu isimde kategori mevcut");
+                return null;
+            }
+
+            category = categoryMapper.map(request);
+         
+
+            category=repository.Save(category);
+
+
+            return categoryMapper.map(category);
+
+        }
+
+
         public List<CategoryResponseDto> GetCategoriesList() {
 
-            List<Category> categories = context.Categories.ToList();
+            List<Category> categories = repository.GetAll();
 
             List<CategoryResponseDto> responseDtos = new List<CategoryResponseDto>();
 
@@ -35,41 +61,14 @@ namespace FirstDBConnection.service
 
         public CategoryResponseDto GetById(int id) {
 
-            Category? category = context.Categories.
-                SingleOrDefault(x => x.CategoryID == id);
-            return categoryMapper.map(category);
+            return categoryMapper.map(repository.GetById(id));
             
         }
 
-        public CategoryResponseDto create(CategoryCreateRequestDto request)
-        {
-            Category? category = context.Categories.FirstOrDefault
-                (cat => cat.CategoryName.Equals(request.CategoryName));
-
-            if (category != null)
-            {
-                Console.WriteLine(request.CategoryName+" bu isimde kategori mevcut");
-                return null;
-            }
-            
-            Category ca= new Category();
-
-            ca.CategoryName = request.CategoryName;
-            ca.Description = request.Desc;
-            ca.Status = StatusEnam.ACTIVE;
-
-            ca.CategoryName = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-            Category cate =context.Categories.Add(ca).Entity;
-
-            context.SaveChanges();
-
-            return categoryMapper.map(cate);
-        
-        }
 
         public CategoryResponseDto update(CategoryUpdateRequestDto dto)
         {
-            Category? category = context.Categories.Find(dto.CategoryID);
+            Category? category = repository.GetById(dto.CategoryID);
 
 
             if (category == null) {
@@ -82,16 +81,20 @@ namespace FirstDBConnection.service
 
             category = categoryMapper.map(dto);
 
-         
-            context.Categories.Update(category);
-            context.SaveChanges();
+            if (category == null) {
+                throw new Exception("category update edilemedi!!!");
+            }
+
+         // TODO Repository'e update metodu yazılıp kullanılmalı.
+            //context.Categories.Update(category);
+            //context.SaveChanges();
 
             return categoryMapper.map(category);
         }
 
         public bool softDelete(int id)
         {
-            Category? category = context.Categories.SingleOrDefault(x => x.CategoryID == id);
+            Category? category = repository.GetById(id);
 
             if (category == null) {
                 throw new Exception(id + " id'sine ait category bulunamadi!!!");
@@ -99,8 +102,9 @@ namespace FirstDBConnection.service
 
             category.Status = StatusEnam.DELETED;
 
-            context.Categories.Update(category);
-            context.SaveChanges();
+            // TODO Repository'e update metodu yazılıp kullanılmalı.
+            //context.Categories.Update(category);
+            //context.SaveChanges();
             return true;
 
         }
@@ -108,15 +112,15 @@ namespace FirstDBConnection.service
 
         public bool hardDelete(int id)
         {
-            Category? category = context.Categories.SingleOrDefault(x => x.CategoryID == id);
+            Category? category = repository.GetById(id);
 
             if (category == null)
             {
                 throw new Exception(id + " id'sine ait category bulunamadi!!!");
             }
-
-            context.Categories.Remove(category);
-            context.SaveChanges();
+            // TODO Repository'de silme metodu yazılıp o çağrılmalı.
+            //context.Categories.Remove(category);
+            //context.SaveChanges();
             return true;
 
         }
