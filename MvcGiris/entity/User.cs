@@ -1,9 +1,13 @@
 ﻿using MvcGiris.entity.enums;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MvcGiris.entity
 {
+    [Table("Users")]
     public class User : BaseEntity
-    {        
+    {
+        [Required,MaxLength(50)]
         public string Username { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
